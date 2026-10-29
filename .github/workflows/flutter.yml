@@ -1,0 +1,30 @@
+name: Flutter checks
+
+on:
+  push:
+    paths:
+      - 'app/**'
+      - '.github/workflows/flutter.yml'
+  pull_request:
+    paths:
+      - 'app/**'
+      - '.github/workflows/flutter.yml'
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: Dependencies
+        working-directory: app
+        run: flutter pub get
+      - name: Analyze
+        working-directory: app
+        run: flutter analyze
+      - name: Tests
+        working-directory: app
+        run: flutter test
